@@ -13,6 +13,7 @@
 #import "TweetVC.h"
 #import "Tweet.h"
 #import "CoreDataHelper.h"
+#import "UIImage+Additions.h"
 
 #define     TEXT_HOME_FEED          @"Home Feed:"
 #define     TEXT_SEARCH_RESULTS     @"Search Results:"
@@ -20,7 +21,9 @@
 
 @interface MainVC () <UISearchBarDelegate, UITableViewDataSource, UITableViewDelegate> {
     NSString *prevSearch;
+    NSString *prevType;
     NSMutableArray *tweets;
+    NSMutableArray *prevTweets;
 }
 
 @end
@@ -29,6 +32,8 @@
 
 #pragma mark - UIViewController lifecycle
 
+// viewDidLoad
+// Function : set up the view when it loads
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setTitle:@"Whisper Challenge"];
@@ -42,6 +47,7 @@
     [self.viwTyping addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(endEditing)]];
     
     tweets = [NSMutableArray new];
+    prevTweets = [NSMutableArray new];
     [self.lblNoData setHidden:YES];
     
     
@@ -52,35 +58,65 @@
         if(!granted) {
             [self showError:@"Please allow Twitter access in:\nSettings -> Privacy -> Twitter."];
         } else {
-            self.lblDisplayType.text = TEXT_HOME_FEED;
+            dispatch_async(dispatch_get_main_queue(), ^{
+                self.lblDisplayType.text = TEXT_HOME_FEED;
+            });
             [self loadTweets:self.searchBar.text];
         }
     }];
-}
+} // viewDidLoad
 
+
+
+// viewWillAppear
+// Function : set up the view before it is displayed
 - (void)viewWillAppear:(BOOL)animated {
     [self.viwTyping setAlpha:0];
     [self.viwTyping setHidden:YES];
     [self setTitle:@"Whisper Challenge"];
     self.tblToTopCST.constant = -64;
     [self.view layoutIfNeeded];
-}
+    
+    if( [self.lblDisplayType.text isEqualToString:TEXT_SAVED_TWEETS] ) {
+        tweets = [[[CoreDataHelper sharedHelper] getSavedTweets] mutableCopy];
+        [self.tbvResults reloadData];
+    }
+} // viewWillAppear
 
-- (void)viewDidDisappear:(BOOL)animated {
-    [self setTitle:@".."];
-}
+
 
 #pragma mark - Custom methods
 
+// btnSavedTweets
+// Function : display any tweets that are saved
 -(IBAction)btnSavedTweets:(id)sender {
-    prevSearch = nil;
-    tweets = [[[CoreDataHelper sharedHelper] getSavedTweets] mutableCopy];
-    [self.tbvResults reloadData];
-    [self.lblNoData setHidden: tweets.count ];
-    self.lblDisplayType.text = TEXT_SAVED_TWEETS;
-}
+    if( [self.lblDisplayType.text isEqualToString:TEXT_SAVED_TWEETS] ) {
+        tweets = [NSMutableArray arrayWithArray:prevTweets];
+        self.lblDisplayType.text = prevType;
+        if( [tweets count] )
+            [self.tbvResults reloadData];
+        else
+            [self loadTweets:self.searchBar.text];
+    } else {
+        prevSearch = nil;
+        prevType = self.lblDisplayType.text;
+        prevTweets = [NSMutableArray arrayWithArray:tweets];
+        tweets = [[[CoreDataHelper sharedHelper] getSavedTweets] mutableCopy];
+        [self.tbvResults reloadData];
+        // scroll to top
+        [self.tbvResults scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]
+                               atScrollPosition:UITableViewScrollPositionTop
+                                       animated:NO];
+        [self.lblNoData setHidden: tweets.count ];
+        self.lblDisplayType.text = TEXT_SAVED_TWEETS;
+    }
+    
+} // btnSavedTweets
 
-// Loads tweets to be displayed.
+
+
+// loadTweets
+// Function : set up to load tweets based on the text in the status bar
 -(void) loadTweets:(NSString *)searchQuery {
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.lblNoData setHidden:YES];
@@ -104,9 +140,9 @@
                 // if empty search, load ______ tweets
                 // else, load for searched query
                 if( searchQuery.length )
-                    urlString = @"https://api.twitter.com/1.1/search/tweets.json";
+                    urlString = @"https://api.twitter.com/1.1/search/tweets.json?count=100&";
                 else
-                    urlString = @"https://api.twitter.com/1.1/statuses/home_timeline.json";
+                    urlString = @"https://api.twitter.com/1.1/statuses/home_timeline.json?count=100";
                 NSURL *url = [NSURL URLWithString:urlString];
                 
                 [self twitterMakeRequestWithAccount:twitterAccount Url:url Search:searchQuery.length];
@@ -117,16 +153,18 @@
             [self showError:@"Please allow Twitter access in:\nSettings -> Privacy -> Twitter."];
         }
     }];
-}
+} // loadTweets
 
+
+
+// twitterMakeRequestWithAccount
+// Function : make request with URL to twitter.
 -(void) twitterMakeRequestWithAccount:(ACAccount*)account Url:(NSURL*)url Search:(BOOL)isQuery {
     // Creating a request to get the info about a user on Twitter
     NSMutableDictionary *params = [NSMutableDictionary new];
-    if( isQuery ) {
+    if( isQuery )
         [params setObject:self.searchBar.text forKey:@"q"];
-    } else {
-        
-    }
+
     SLRequest *twitterInfoRequest = [SLRequest requestForServiceType:SLServiceTypeTwitter
                                                        requestMethod:SLRequestMethodGET
                                                                  URL:url
@@ -151,6 +189,7 @@
         [self displayLoadingView:NO];
         
         dispatch_async(dispatch_get_main_queue(), ^{
+            
             // Update display type
             self.lblDisplayType.text = isQuery ? TEXT_SEARCH_RESULTS : TEXT_HOME_FEED;
             
@@ -159,6 +198,7 @@
                 NSError *error = nil;
                 tweets = [NSMutableArray new];
                 if(isQuery) {
+                    // if loading results returned from search
                     NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData
                                                                          options:kNilOptions
                                                                            error:&error];
@@ -171,6 +211,7 @@
                             [tweets addObject: [[Tweet alloc] initWithDictionary:d] ];
                     }
                 } else {
+                    // if loading results from home feed
                     NSArray *tweetArray = [NSJSONSerialization JSONObjectWithData:responseData
                                                                           options:kNilOptions
                                                                             error:&error];
@@ -187,9 +228,12 @@
             }
         });
     }];
-}
+} // twitterMakeRequestWithAccount
 
-// Shows/Hides the loading view.
+
+
+// displayLoadingView
+// Function : Shows/Hides the loading view.
 -(void) displayLoadingView:(BOOL)show {
     dispatch_async(dispatch_get_main_queue(), ^{
         [UIView animateWithDuration:0.2 animations:^{
@@ -197,14 +241,18 @@
             [self.view layoutIfNeeded];
         }];
     });
-}
+} // displayLoadingView
 
-// Ends all editing in the view controller.
+
+
+// displayLoadingView
+// Function : Ends all editing in the view controller.
 -(void) endEditing {
     [self.view endEditing:YES];
 }
 
-// Shows an error message with an "Okay" button.
+// displayLoadingView
+// Function : Shows an error message with an "Okay" button.
 -(void) showError:(NSString*)message {
     // Show an error message.
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -219,6 +267,8 @@
     });
 }
 
+// prepareForSegue
+// Function : send data to new view controllers before they are displayed.
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if( [segue.destinationViewController isKindOfClass:[TweetVC class]] ) {
         TweetVC *vc = segue.destinationViewController;
@@ -226,7 +276,10 @@
     }
 }
 
+
+
 #pragma mark - UISearchBar delegate
+
 -(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
     [self endEditing];
 }
@@ -257,6 +310,8 @@
     }
 }
 
+
+
 #pragma mark - UITableView delegate and datasource
 
 -(NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -272,19 +327,37 @@
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"tweetCell"];
         
+        // handle label
         UILabel *lbl = [[UILabel alloc] initWithFrame:CGRectMake(20, 6, 0, 0)];
         [lbl setFont:[UIFont systemFontOfSize:12]];
         [lbl setTextColor:[UIColor lightGrayColor]];
         [lbl setTag:100];
         [cell.contentView addSubview:lbl];
         
-        lbl = [[UILabel alloc] initWithFrame:CGRectMake(20, 22, cell.contentView.frame.size.width - 40, 55)];
+        // time label
+        lbl = [[UILabel alloc] initWithFrame:CGRectMake(20, 6, 0, 0)];
+        [lbl setTextAlignment:NSTextAlignmentRight];
+        [lbl setFont:[UIFont systemFontOfSize:12]];
+        [lbl setTextColor:[UIColor lightGrayColor]];
+        [lbl setTag:102];
+        [cell.contentView addSubview:lbl];
+        
+        // clock image
+        UIImage *clockImg = [[UIImage imageNamed:@"time"] changeImageColor:[UIColor lightGrayColor]];
+        UIImageView *imv = [[UIImageView alloc] initWithImage:clockImg];
+        [imv setTag:103];
+        [imv setContentMode:UIViewContentModeScaleAspectFit];
+        [cell.contentView addSubview:imv];
+        
+        // tweet text label
+        lbl = [[UILabel alloc] initWithFrame:CGRectMake(20, 24, cell.contentView.frame.size.width - 40, 55)];
         [lbl setFont:[UIFont systemFontOfSize:13]];
         [lbl setTextColor:[UIColor darkGrayColor]];
         [lbl setTag:101];
         [lbl setNumberOfLines:3];
         [cell.contentView addSubview:lbl];
         
+        // divider
         UIView *viw = [[UIView alloc] initWithFrame:CGRectMake(20, 79, [UIScreen mainScreen].bounds.size.width, 1)];
         [viw setBackgroundColor:[UIColor lightGrayColor]];
         [cell.contentView addSubview:viw];
@@ -295,6 +368,14 @@
     UILabel *lbl = (UILabel*)[cell.contentView viewWithTag:100];
     lbl.text = [tweet getUserHandle];
     [lbl sizeToFit];
+    
+    lbl = (UILabel*)[cell.contentView viewWithTag:102];
+    lbl.text = [tweet getShortWhenText];
+    [lbl sizeToFit];
+    [lbl setFrame:CGRectMake([UIScreen mainScreen].bounds.size.width-100, lbl.frame.origin.y, 65, lbl.frame.size.height)];
+    
+    UIImageView *imv = (UIImageView*)[cell.contentView viewWithTag:103];
+    [imv setFrame:CGRectMake([UIScreen mainScreen].bounds.size.width-30, lbl.frame.origin.y, lbl.frame.size.height, lbl.frame.size.height)];
     
     lbl = (UILabel*)[cell.contentView viewWithTag:101];
     lbl.text = [tweet getTweetText];
@@ -315,5 +396,7 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     [self performSegueWithIdentifier:@"SEGUE_SHOW_TWEET" sender:[tweets objectAtIndex:indexPath.row]];
 }
+
+
 
 @end

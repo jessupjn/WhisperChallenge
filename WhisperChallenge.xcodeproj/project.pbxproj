@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0407A0661AF3D19F003739D5 /* UIImage+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 0407A0651AF3D19F003739D5 /* UIImage+Additions.m */; };
+		0407A0681AF3F1F5003739D5 /* time.png in Resources */ = {isa = PBXBuildFile; fileRef = 0407A0671AF3F1F5003739D5 /* time.png */; };
 		049B69A51AF2F9EA00928EDC /* WCDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 049B69A31AF2F9EA00928EDC /* WCDataModel.xcdatamodeld */; };
 		049B69A71AF3307F00928EDC /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 049B69A61AF3307F00928EDC /* CoreData.framework */; };
 		04D5B15E1AF262B10049CEC3 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 04D5B15D1AF262B10049CEC3 /* main.m */; };
@@ -52,6 +54,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0407A0641AF3D19F003739D5 /* UIImage+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Additions.h"; sourceTree = "<group>"; };
+		0407A0651AF3D19F003739D5 /* UIImage+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Additions.m"; sourceTree = "<group>"; };
+		0407A0671AF3F1F5003739D5 /* time.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = time.png; sourceTree = "<group>"; };
 		049B69A41AF2F9EA00928EDC /* WCDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = WCDataModel.xcdatamodel; sourceTree = "<group>"; };
 		049B69A61AF3307F00928EDC /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		04D5B1581AF262B10049CEC3 /* WhisperChallenge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WhisperChallenge.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -136,7 +141,6 @@
 		04D5B14F1AF262B10049CEC3 = {
 			isa = PBXGroup;
 			children = (
-				049B69A61AF3307F00928EDC /* CoreData.framework */,
 				04D5B15A1AF262B10049CEC3 /* WhisperChallenge */,
 				04D5B1741AF262B10049CEC3 /* WhisperChallengeTests */,
 				04D5B1591AF262B10049CEC3 /* Products */,
@@ -200,6 +204,7 @@
 			isa = PBXGroup;
 			children = (
 				04D5B1991AF2B8D80049CEC3 /* SDWebImage */,
+				049B69A61AF3307F00928EDC /* CoreData.framework */,
 				04D5B1831AF262E40049CEC3 /* Social.framework */,
 				04D5B1811AF262DB0049CEC3 /* Accounts.framework */,
 			);
@@ -220,6 +225,7 @@
 		04D5B18F1AF28BAA0049CEC3 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				0407A0671AF3F1F5003739D5 /* time.png */,
 				04D5B18D1AF28B9E0049CEC3 /* back@2x.png */,
 				04D5B1971AF2A2100049CEC3 /* Bookmark@2x.png */,
 			);
@@ -233,6 +239,8 @@
 				04D5B1921AF29ABF0049CEC3 /* CoreDataHelper.m */,
 				04D5B1941AF29DAD0049CEC3 /* Tweet.h */,
 				04D5B1951AF29DAD0049CEC3 /* Tweet.m */,
+				0407A0641AF3D19F003739D5 /* UIImage+Additions.h */,
+				0407A0651AF3D19F003739D5 /* UIImage+Additions.m */,
 			);
 			name = "Custom Objects";
 			sourceTree = "<group>";
@@ -359,6 +367,7 @@
 			files = (
 				04D5B1671AF262B10049CEC3 /* Main.storyboard in Resources */,
 				04D5B1981AF2A2100049CEC3 /* Bookmark@2x.png in Resources */,
+				0407A0681AF3F1F5003739D5 /* time.png in Resources */,
 				04D5B18E1AF28B9E0049CEC3 /* back@2x.png in Resources */,
 				04D5B16C1AF262B10049CEC3 /* LaunchScreen.xib in Resources */,
 				04D5B1691AF262B10049CEC3 /* Images.xcassets in Resources */,
@@ -380,6 +389,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				04D5B1891AF263A60049CEC3 /* MainVC.m in Sources */,
+				0407A0661AF3D19F003739D5 /* UIImage+Additions.m in Sources */,
 				04D5B1C21AF2B8D90049CEC3 /* SDWebImageManager.m in Sources */,
 				04D5B1BD1AF2B8D90049CEC3 /* SDImageCache.m in Sources */,
 				04D5B1C11AF2B8D90049CEC3 /* SDWebImageDownloaderOperation.m in Sources */,

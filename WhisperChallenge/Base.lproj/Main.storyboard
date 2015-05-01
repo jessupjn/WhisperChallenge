@@ -54,11 +54,11 @@
                                 <rect key="frame" x="0.0" y="133" width="600" height="44"/>
                                 <subviews>
                                     <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="KM5-hc-yci">
-                                        <rect key="frame" x="207" y="12" width="20" height="20"/>
+                                        <rect key="frame" x="227" y="15" width="20" height="20"/>
                                     </activityIndicatorView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loading Data..." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="D8C-S5-d07">
-                                        <rect key="frame" x="242" y="11" width="117" height="21"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loading Data..." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="D8C-S5-d07">
+                                        <rect key="frame" x="257" y="17" width="87" height="15"/>
+                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="12"/>
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -69,7 +69,7 @@
                                     <constraint firstItem="D8C-S5-d07" firstAttribute="centerY" secondItem="KM5-hc-yci" secondAttribute="centerY" id="Jkn-nh-nyv"/>
                                     <constraint firstAttribute="height" constant="44" id="MTc-UE-peJ"/>
                                     <constraint firstAttribute="centerX" secondItem="D8C-S5-d07" secondAttribute="centerX" constant="-0.5" id="OYX-8Z-6Vz"/>
-                                    <constraint firstItem="D8C-S5-d07" firstAttribute="leading" secondItem="KM5-hc-yci" secondAttribute="trailing" constant="15" id="dFv-wG-Ngn"/>
+                                    <constraint firstItem="D8C-S5-d07" firstAttribute="leading" secondItem="KM5-hc-yci" secondAttribute="trailing" constant="10" id="dFv-wG-Ngn"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cBY-4Y-iSI">
@@ -90,7 +90,7 @@
                                     <constraint firstAttribute="height" constant="25" id="xrg-iy-9BG"/>
                                 </constraints>
                             </view>
-                            <searchBar contentMode="redraw" placeholder="Search Tweets" translatesAutoresizingMaskIntoConstraints="NO" id="4i4-y3-dC7">
+                            <searchBar contentMode="redraw" placeholder="Search Twitter" translatesAutoresizingMaskIntoConstraints="NO" id="4i4-y3-dC7">
                                 <rect key="frame" x="0.0" y="64" width="600" height="44"/>
                                 <color key="barTintColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                                 <textInputTraits key="textInputTraits"/>
@@ -168,7 +168,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bCT-GB-5Tt" userLabel="When">
-                                <rect key="frame" x="546" y="72" width="38" height="18"/>
+                                <rect key="frame" x="506" y="72" width="38" height="18"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
@@ -183,29 +183,47 @@
                                 <rect key="frame" x="16" y="128" width="568" height="459"/>
                                 <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="459" id="DpG-68-Lra"/>
+                                    <constraint firstAttribute="height" priority="900" constant="459" id="DpG-68-Lra"/>
                                 </constraints>
                             </imageView>
+                            <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VtP-2Y-E4M">
+                                <rect key="frame" x="559" y="69" width="25" height="25"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="25" id="Zlf-8Y-Ucu"/>
+                                    <constraint firstAttribute="width" constant="25" id="oCv-FR-Sv7"/>
+                                </constraints>
+                                <state key="normal" backgroundImage="Bookmark.png">
+                                    <color key="titleColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="btnBookmarkAction:" destination="cfI-iS-ZdA" eventType="touchUpInside" id="u9L-7d-seW"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="pc3-Qk-Lzt" firstAttribute="leading" secondItem="2YK-we-NUq" secondAttribute="leading" id="7wc-2M-gZG"/>
                             <constraint firstItem="pc3-Qk-Lzt" firstAttribute="centerY" secondItem="bCT-GB-5Tt" secondAttribute="centerY" id="CfF-G9-PVu"/>
                             <constraint firstItem="pc3-Qk-Lzt" firstAttribute="top" secondItem="DQc-6r-ake" secondAttribute="bottom" constant="8" id="JiC-qB-5pW"/>
-                            <constraint firstItem="VKO-dd-ucb" firstAttribute="top" secondItem="2YK-we-NUq" secondAttribute="bottom" constant="10" id="KxS-Bw-vWX"/>
+                            <constraint firstItem="VKO-dd-ucb" firstAttribute="top" secondItem="2YK-we-NUq" secondAttribute="bottom" priority="900" constant="10" id="KxS-Bw-vWX"/>
                             <constraint firstItem="2YK-we-NUq" firstAttribute="top" secondItem="pc3-Qk-Lzt" secondAttribute="bottom" priority="900" constant="7" id="MOX-T9-w6K"/>
+                            <constraint firstItem="VtP-2Y-E4M" firstAttribute="trailing" secondItem="2YK-we-NUq" secondAttribute="trailing" id="MzT-hU-jeU"/>
                             <constraint firstItem="VKO-dd-ucb" firstAttribute="leading" secondItem="b5C-No-vbU" secondAttribute="leadingMargin" id="Qgt-R3-fhy"/>
                             <constraint firstItem="pc3-Qk-Lzt" firstAttribute="height" secondItem="bCT-GB-5Tt" secondAttribute="height" id="WAu-7x-lxf"/>
+                            <constraint firstItem="VtP-2Y-E4M" firstAttribute="leading" secondItem="bCT-GB-5Tt" secondAttribute="trailing" constant="15" id="a17-bn-7Xj"/>
                             <constraint firstItem="pc3-Qk-Lzt" firstAttribute="leading" secondItem="b5C-No-vbU" secondAttribute="leadingMargin" id="azg-Fv-pSa"/>
-                            <constraint firstItem="bCT-GB-5Tt" firstAttribute="trailing" secondItem="2YK-we-NUq" secondAttribute="trailing" id="hGI-s7-MHd"/>
+                            <constraint firstItem="VtP-2Y-E4M" firstAttribute="centerY" secondItem="pc3-Qk-Lzt" secondAttribute="centerY" id="e6n-fz-9kt"/>
                             <constraint firstAttribute="centerX" secondItem="VKO-dd-ucb" secondAttribute="centerX" id="qaX-l4-dmX"/>
-                            <constraint firstItem="bCT-GB-5Tt" firstAttribute="trailing" secondItem="b5C-No-vbU" secondAttribute="trailingMargin" id="wvE-pk-cbx"/>
+                            <constraint firstItem="VtP-2Y-E4M" firstAttribute="trailing" secondItem="b5C-No-vbU" secondAttribute="trailingMargin" id="raa-g8-edP"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Tweet" id="mN3-Ta-aX1">
                         <barButtonItem key="backBarButtonItem" image="back@2x.png" id="H3N-Cp-ZXy"/>
                     </navigationItem>
                     <connections>
+                        <outlet property="btnSave" destination="VtP-2Y-E4M" id="UdC-lX-W9P"/>
                         <outlet property="imvHeightCst" destination="DpG-68-Lra" id="gp3-4j-BTC"/>
                         <outlet property="imvTweetImage" destination="VKO-dd-ucb" id="Y4h-8v-doe"/>
                         <outlet property="lblContent" destination="2YK-we-NUq" id="RvJ-Gw-7iR"/>

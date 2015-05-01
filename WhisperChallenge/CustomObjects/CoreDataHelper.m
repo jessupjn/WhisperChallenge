@@ -7,15 +7,13 @@
 //
 #import <CoreData/CoreData.h>
 #import "CoreDataHelper.h"
-
-@interface CoreDataHelper ()
-@property (nonatomic,strong) NSManagedObjectContext* managedObjectContext;
-@end
+#import "AppDelegate.h"
 
 @implementation CoreDataHelper
 
-//http://www.raywenderlich.com/934/core-data-tutorial-for-ios-getting-started
 
+// sharedHelper
+// Function : creates static CoreDataHelper object (if needed) and returns it.
 + (instancetype)sharedHelper {
     static CoreDataHelper *sharedMyManager = nil;
     static dispatch_once_t onceToken;
@@ -23,40 +21,87 @@
         sharedMyManager = [[self alloc] init];
     });
     return sharedMyManager;
-}
+} // sharedHelper
 
-#warning TODO:
+
+
+// getSavedTweets
+// Function : gets a list of saved objects from CoreData
 -(NSArray*) getSavedTweets {
-    return [NSArray new];
-}
+    NSMutableArray *savedTweets = [NSMutableArray new];
+    NSManagedObjectContext *context = [((AppDelegate*)[UIApplication sharedApplication].delegate) managedObjectContext];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"SavedTweetInfo" inManagedObjectContext:context];
 
-#warning TODO:
--(void) saveTweet:(Tweet*)tweet withImage:(UIImage*)image{
+    // build fetch request
+    NSFetchRequest *fetchRequest = [NSFetchRequest new];
+    [fetchRequest setEntity:entity];
     
-    // create object to be saved
-    NSManagedObjectContext *context = [self managedObjectContext];
-    NSManagedObject *tweetInfo = [NSEntityDescription insertNewObjectForEntityForName:@"SavedTweetInfo" inManagedObjectContext:context];
-    
-    // set object's data
-    [tweetInfo setValue:[tweet getUserName] forKey:@"user"];
-    [tweetInfo setValue:[tweet getTweetText] forKey:@"text"];
-    [tweetInfo setValue:[tweet getID] forKey:@"id"];
-    [tweetInfo setValue:[tweet getDate] forKey:@"date"];
-    if(image)
-        [tweetInfo setValue:UIImagePNGRepresentation(image) forKey:@"image"];
-    
-    // save the object
+    // make fetch request
     NSError *error;
-    if (![context save:&error]) {
-        NSLog(@"Whoops, couldn't save: %@", [error localizedDescription]);
+    NSArray *fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
+    for (NSManagedObject *info in fetchedObjects) {
+        Tweet *t = [[Tweet alloc] initWithCoreObject:info];
+        [savedTweets addObject:t];
     }
     
-}
+    return [NSArray arrayWithArray:savedTweets];
+} // getSavedTweets
 
-#warning TODO:
--(void) removeTweet:(Tweet*)tweet{
-}
 
+
+// saveTweet
+// Function : saves the tweet object if it is not already in CoreData.
+-(void) saveTweet:(Tweet*)tweet withImage:(UIImage*)image {
+    
+    if( ![self tweetIsSaved:tweet] ) {
+        // create object to be saved
+        NSManagedObjectContext *context = [((AppDelegate*)[UIApplication sharedApplication].delegate) managedObjectContext];
+        NSManagedObject *tweetInfo = [NSEntityDescription insertNewObjectForEntityForName:@"SavedTweetInfo" inManagedObjectContext:context];
+        
+        // set object's data
+        [tweetInfo setValue:[tweet getUserName] forKey:@"user"];
+        [tweetInfo setValue:[tweet getTweetText] forKey:@"text"];
+        [tweetInfo setValue:[tweet getID] forKey:@"id"];
+        [tweetInfo setValue:[tweet getDate] forKey:@"date"];
+        if(image)
+            [tweetInfo setValue:UIImagePNGRepresentation(image) forKey:@"image"];
+        
+        // save the object
+        NSError *error;
+        if (![context save:&error]) {
+            NSLog(@"Whoops, couldn't save: %@", [error localizedDescription]);
+        }
+    } else
+        NSLog(@"Whoops, tweet is already saved");
+} // saveTweet
+
+
+
+// removeTweet
+// Function : if tweet object is in CoreData, remove it.
+-(void) removeTweet:(Tweet*)tweet {
+    
+    if( [self tweetIsSaved:tweet] ) {
+        NSManagedObjectContext *context = [((AppDelegate*)[UIApplication sharedApplication].delegate) managedObjectContext];
+
+        // get object to be removed
+        NSFetchRequest *fetch = [[NSFetchRequest alloc] init];
+        fetch.entity = [NSEntityDescription entityForName:@"SavedTweetInfo" inManagedObjectContext:context];
+        fetch.predicate = [NSPredicate predicateWithFormat:@"id == %@", [tweet getID]];
+        
+        // delete the object
+        NSArray *array = [context executeFetchRequest:fetch error:nil];
+        if( array.count )
+            [context deleteObject:[array objectAtIndex:0]];
+    }
+    else
+        NSLog(@"Whoops, tweet isnt saved");
+} // removeTweet
+
+
+
+// tweetIsSaved
+// Function : returns if the tweet object is in CoreData.
 -(BOOL) tweetIsSaved:(Tweet*)tweet{
     return [[self getSavedTweets] containsObject:tweet];
 }
