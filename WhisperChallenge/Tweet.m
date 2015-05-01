@@ -24,6 +24,14 @@
     return self;
 }
 
+- (id)initWithCoreObject:(NSDictionary *)dic {
+    
+    if ((self = [super init])) {
+        data = [NSDictionary dictionaryWithDictionary:dic];
+    }
+    return self;
+}
+
 -(NSString *) getUserName {
     NSDictionary *user = (NSDictionary*)[data objectForKey:@"user"];
     return (NSString*)[user objectForKey:@"screen_name"];
@@ -37,11 +45,15 @@
     return (NSString*)[data objectForKey:@"text"];
 }
 
--(NSString *) getWhenText {
+-(NSDate *) getDate {
     NSString *DateString = (NSString*)[data objectForKey:@"created_at"];
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"EEE MMM dd HH:mm:ss z yyyy"];
-    NSDate *capturedStartDate = [dateFormatter dateFromString: DateString];
+    return [dateFormatter dateFromString: DateString];
+}
+
+-(NSString *) getWhenText {
+    NSDate *capturedStartDate = [self getDate];
     
     NSDate *date = [[NSDate alloc] init];
     NSCalendar *gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];

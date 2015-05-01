@@ -12,6 +12,7 @@
 @interface Tweet : NSObject
 
 - (id)initWithDictionary:(NSDictionary *)dic;
+- (id)initWithCoreObject:(NSDictionary *)dic;
 
 -(NSString *) getUserName;
 -(NSString *) getUserHandle;
@@ -19,5 +20,6 @@
 -(NSString *) getWhenText;
 -(NSString *) getID;
 -(NSString *) getImage;
+-(NSDate *) getDate;
 
 @end

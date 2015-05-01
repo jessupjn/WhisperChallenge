@@ -55,6 +55,7 @@
                 [self.imvTweetImage setImage:image];
                 self.imvHeightCst.constant = [UIScreen mainScreen].bounds.size.height - self.imvTweetImage.frame.origin.y - 10;
                 [self.view layoutIfNeeded];
+                [[CoreDataHelper sharedHelper] saveTweet:self.tweet withImage:image];
             } else {
                 [self.imvTweetImage setHidden:YES];
             }
@@ -64,10 +65,10 @@
 }
 
 -(IBAction)btnBookmarkAction:(id)sender {
-    if( [self.btnSave isSelected] )
-        [[CoreDataHelper sharedHelper] saveTweet:self.tweet];
-    else
-        [[CoreDataHelper sharedHelper] removeTweet:self.tweet];
+//    if( [self.btnSave isSelected] )
+//        [[CoreDataHelper sharedHelper] saveTweet:self.tweet];
+//    else
+//        [[CoreDataHelper sharedHelper] removeTweet:self.tweet];
     
     self.btnSave.selected = ![[CoreDataHelper sharedHelper] tweetIsSaved:self.tweet];
         

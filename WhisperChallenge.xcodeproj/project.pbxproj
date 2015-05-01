@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		049B69A51AF2F9EA00928EDC /* WCDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 049B69A31AF2F9EA00928EDC /* WCDataModel.xcdatamodeld */; };
+		049B69A71AF3307F00928EDC /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 049B69A61AF3307F00928EDC /* CoreData.framework */; };
 		04D5B15E1AF262B10049CEC3 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 04D5B15D1AF262B10049CEC3 /* main.m */; };
 		04D5B1611AF262B10049CEC3 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 04D5B1601AF262B10049CEC3 /* AppDelegate.m */; };
 		04D5B1671AF262B10049CEC3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 04D5B1651AF262B10049CEC3 /* Main.storyboard */; };
@@ -50,6 +52,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		049B69A41AF2F9EA00928EDC /* WCDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = WCDataModel.xcdatamodel; sourceTree = "<group>"; };
+		049B69A61AF3307F00928EDC /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		04D5B1581AF262B10049CEC3 /* WhisperChallenge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WhisperChallenge.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		04D5B15C1AF262B10049CEC3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		04D5B15D1AF262B10049CEC3 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -113,6 +117,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				049B69A71AF3307F00928EDC /* CoreData.framework in Frameworks */,
 				04D5B1841AF262E40049CEC3 /* Social.framework in Frameworks */,
 				04D5B1821AF262DB0049CEC3 /* Accounts.framework in Frameworks */,
 			);
@@ -131,6 +136,7 @@
 		04D5B14F1AF262B10049CEC3 = {
 			isa = PBXGroup;
 			children = (
+				049B69A61AF3307F00928EDC /* CoreData.framework */,
 				04D5B15A1AF262B10049CEC3 /* WhisperChallenge */,
 				04D5B1741AF262B10049CEC3 /* WhisperChallengeTests */,
 				04D5B1591AF262B10049CEC3 /* Products */,
@@ -149,10 +155,11 @@
 		04D5B15A1AF262B10049CEC3 /* WhisperChallenge */ = {
 			isa = PBXGroup;
 			children = (
+				049B69A31AF2F9EA00928EDC /* WCDataModel.xcdatamodeld */,
 				04D5B15F1AF262B10049CEC3 /* AppDelegate.h */,
 				04D5B1601AF262B10049CEC3 /* AppDelegate.m */,
 				04D5B1861AF263090049CEC3 /* ViewControllers */,
-				04D5B1901AF29A8F0049CEC3 /* Custom Helpers */,
+				04D5B1901AF29A8F0049CEC3 /* Custom Objects */,
 				04D5B1651AF262B10049CEC3 /* Main.storyboard */,
 				04D5B1681AF262B10049CEC3 /* Images.xcassets */,
 				04D5B16A1AF262B10049CEC3 /* LaunchScreen.xib */,
@@ -219,7 +226,7 @@
 			name = Resources;
 			sourceTree = "<group>";
 		};
-		04D5B1901AF29A8F0049CEC3 /* Custom Helpers */ = {
+		04D5B1901AF29A8F0049CEC3 /* Custom Objects */ = {
 			isa = PBXGroup;
 			children = (
 				04D5B1911AF29ABF0049CEC3 /* CoreDataHelper.h */,
@@ -227,7 +234,7 @@
 				04D5B1941AF29DAD0049CEC3 /* Tweet.h */,
 				04D5B1951AF29DAD0049CEC3 /* Tweet.m */,
 			);
-			name = "Custom Helpers";
+			name = "Custom Objects";
 			sourceTree = "<group>";
 		};
 		04D5B1991AF2B8D80049CEC3 /* SDWebImage */ = {
@@ -388,6 +395,7 @@
 				04D5B1BF1AF2B8D90049CEC3 /* SDWebImageDecoder.m in Sources */,
 				04D5B1961AF29DAD0049CEC3 /* Tweet.m in Sources */,
 				04D5B1BB1AF2B8D90049CEC3 /* MKAnnotationView+WebCache.m in Sources */,
+				049B69A51AF2F9EA00928EDC /* WCDataModel.xcdatamodeld in Sources */,
 				04D5B1BE1AF2B8D90049CEC3 /* SDWebImageCompat.m in Sources */,
 				04D5B1931AF29ABF0049CEC3 /* CoreDataHelper.m in Sources */,
 				04D5B15E1AF262B10049CEC3 /* main.m in Sources */,
@@ -588,6 +596,7 @@
 				04D5B17D1AF262B10049CEC3 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		04D5B17E1AF262B10049CEC3 /* Build configuration list for PBXNativeTarget "WhisperChallengeTests" */ = {
 			isa = XCConfigurationList;
@@ -596,8 +605,22 @@
 				04D5B1801AF262B10049CEC3 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		049B69A31AF2F9EA00928EDC /* WCDataModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				049B69A41AF2F9EA00928EDC /* WCDataModel.xcdatamodel */,
+			);
+			currentVersion = 049B69A41AF2F9EA00928EDC /* WCDataModel.xcdatamodel */;
+			path = WCDataModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 04D5B1501AF262B10049CEC3 /* Project object */;
 }

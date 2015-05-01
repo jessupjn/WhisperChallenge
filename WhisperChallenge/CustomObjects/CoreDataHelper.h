@@ -14,7 +14,7 @@
 + (instancetype)sharedHelper;
 
 -(NSArray*) getSavedTweets;
--(void) saveTweet:(Tweet*)tweet;
+-(void) saveTweet:(Tweet*)tweet withImage:(UIImage*)image;
 -(void) removeTweet:(Tweet*)tweet;
 -(BOOL) tweetIsSaved:(Tweet*)tweet;
 @end
